@@ -10,16 +10,18 @@ var denverURL = "http://api.openweathermap.org/data/2.5/forecast?id=4853799&APPI
 var atlantaURL = "http://api.openweathermap.org/data/2.5/forecast?id=4671576&APPID=2633dd7957343b9edb565bc3bc9be36a";
 var apiKey = "2633dd7957343b9edb565bc3bc9be36a";
 
-var weatherURL = "http://api.openweathermap.org/data/2.5/weather?" + value + "&APPID=2633dd7957343b9edb565bc3bc9be36a";
+var weatherURL = "http://api.openweathermap.org/data/2.5/weather?q=" + value + ",us&units=imperial&APPID=2633dd7957343b9edb565bc3bc9be36a";
 
 var searchBtn = $("#searchBtn");
 var input = $("#search");
 var value = input.val();
 
+// input.on("keyup", function() {
+//   value = $("#search").val().toLowerCase();
+// });
+
 searchBtn.on("click", function() {
-  input.on("keyup", function() {
-    value = $("#search").val().toLowerCase();
-  })
+  value = $("#search").val().toLowerCase();
     $.ajax( {
       url: weatherURL,
       method: "GET",
@@ -29,10 +31,14 @@ searchBtn.on("click", function() {
       }
     }).then(function(response) {
       var title = $("#title");
+      var temp = $("#temp")
+      var humidity = $("#humidity")
       var wind = $("#wind");
       console.log(response);
       title.text(response.name);
-      wind.text(response.wind.speed);
+      wind.text("Wind Speed: " + response.wind.speed);
+      temp.text("Temperature: " + parseInt(response.main.temp));
+      humidity.text("Humidity: " + response.main.humidity);
     });
     
   });
