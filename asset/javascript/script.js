@@ -17,6 +17,8 @@ $(document).ready(function(){
   var searchBtn = $("#searchBtn");
   var input = $("#search");
   var value = input.val();
+  var lat = [];
+  var lon = [];
 
   // Variables for today's weather
   var title = $("#cityTitle");
@@ -52,6 +54,7 @@ $(document).ready(function(){
           units: "imperial"
         }
       }).then(function(response) {
+        console.log(response);
         title.text(response.city.name + " (" + moment().format("MMM Do YYYY") + ")");
         var iconImg = "http://openweathermap.org/img/w/" + response.list[0].weather[0].icon + ".png";
           $("#todaysIcon").attr('src', iconImg);
@@ -64,35 +67,50 @@ $(document).ready(function(){
         var iconImgOne = "http://openweathermap.org/img/w/" + response.list[6].weather[0].icon + ".png";
           $("#1img").attr('src', iconImgOne);
         firstTemp.text("Temp: " + parseInt(response.list[6].main.temp_max) + String.fromCharCode(176))
-        firstHumidity.text("Humidity: " + response.list[6].main.humidity);
+        firstHumidity.text("Humidity: " + response.list[6].main.humidity + "%");
 
         // Second day of forecast
         secondDate.text(moment().add(2, 'days').format('MMM Do'));
         var iconImgTwo = "http://openweathermap.org/img/w/" + response.list[13].weather[0].icon + ".png";
           $("#2img").attr('src', iconImgTwo);
         secondTemp.text("Temp: " + parseInt(response.list[13].main.temp_max) + String.fromCharCode(176))
-        secondHumidity.text("Humidity: " + response.list[13].main.humidity);
+        secondHumidity.text("Humidity: " + response.list[13].main.humidity + "%");
 
         // Third day of forecast
         thirdDate.text(moment().add(3, 'days').format('MMM Do'));
         var iconImgThree = "http://openweathermap.org/img/w/" + response.list[21].weather[0].icon + ".png";
           $("#3img").attr('src', iconImgThree);
         thirdTemp.text("Temp: " + parseInt(response.list[21].main.temp_max) + String.fromCharCode(176))
-        thirdHumidity.text("Humidity: " + response.list[21].main.humidity);
+        thirdHumidity.text("Humidity: " + response.list[21].main.humidity + "%");
 
         // Fourth day of forecast
         fourthDate.text(moment().add(4, 'days').format('MMM Do'));
         var iconImgFour = "http://openweathermap.org/img/w/" + response.list[29].weather[0].icon + ".png";
           $("#4img").attr('src', iconImgFour);
         fourthTemp.text("Temp: " + parseInt(response.list[29].main.temp_max) + String.fromCharCode(176))
-        fourthHumidity.text("Humidity: " + response.list[29].main.humidity);
+        fourthHumidity.text("Humidity: " + response.list[29].main.humidity + "%");
 
         // Fifth day of forecast
         fifthDate.text(moment().add(5, 'days').format('MMM Do'));
         var iconImgFive = "http://openweathermap.org/img/w/" + response.list[37].weather[0].icon + ".png";
           $("#5img").attr('src', iconImgFive);
         fifthTemp.text("Temp: " + parseInt(response.list[37].main.temp_max) + String.fromCharCode(176))
-        fifthHumidity.text("Humidity: " + response.list[37].main.humidity);
+        fifthHumidity.text("Humidity: " + response.list[37].main.humidity + "%");
+
+        $.ajax( {
+          url: UVIndexURL,
+          method: "GET",
+          data: {    
+            q: value,
+            APPID: apiKey,
+            units: "imperial",
+            lat: response.city.coord.lat,
+            lon: response.city.coord.lon
+          }
+        }).then(function(resp) {
+          console.log(resp)
+          $("#uvText").text(resp[0].value);
+        })
       });
-    });
   })
+})
