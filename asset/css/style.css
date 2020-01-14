@@ -28,45 +28,5 @@
 
 #uvText {
   color: white;
-  background-color: rgb(173, 23, 23);
-}
-
-#firstBox {
-  background-color: #276EE9;
-  margin-left: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-#secondBox {
-  background-color: #276EE9;
-  margin-left: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-#thirdBox {
-  background-color: #276EE9;
-  margin-left: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-#fourthBox {
-  background-color: #276EE9;
-  margin-left: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-}
-
-#fifthBox {
-  background-color: #276EE9;
-  margin-left: 20px;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
+  background-color: rgb(211, 77, 77);
 }
