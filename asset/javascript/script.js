@@ -31,6 +31,26 @@ $(document).ready(function(){
   var fourthDate = $("#4date");
   var fifthDate = $("#5date");
 
+  // ADD FUNCTION FOR ADDING BUTTONS WHEN SEARCH IS DONE. STORE HISTORY DATA IN LOCAL STORAGE FOR BUTTONS TO PULL DATA
+  
+  function addingButton(key, value) {
+    localStorage.setItem(key, input.val());
+    var item = localStorage.getItem(value);
+    input.innerHTML = item
+    if(item != null) {
+      var newBtn = $("<button>");
+      newBtn.html(item);
+      newBtn.appendTo(".list-group");
+    };
+    newBtn.on("click", function() {
+      localStorage.getItem(item);
+      if(item) {
+        item = input.innerHTML;
+      }
+    });
+  }
+
+
   searchBtn.on("click", function() {
     value = $("#search").val().toLowerCase();
       $.ajax( {
@@ -101,5 +121,6 @@ $(document).ready(function(){
           $("#uvText").text(resp[0].value);
         })
       });
+      addingButton();
   })
 })
