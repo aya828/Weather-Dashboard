@@ -7,12 +7,16 @@ $(document).ready(function(){
   var searchBtn = $("#searchBtn");
   var input = $("#search");
   var value = input.val();
+  var newBtn = $("<button>");
 
   // Variables for today's weather
   var title = $("#cityTitle");
   var temp = $("#temp")
   var humidity = $("#humidity")
   var wind = $("#wind");
+  
+
+  var searchedCities;
 
   // Variables for 5-Day forecast temperature and humidity
   var firstTemp = $("#1Temp");
@@ -32,10 +36,21 @@ $(document).ready(function(){
   var fifthDate = $("#5date");
 
   // ADD FUNCTION FOR ADDING BUTTONS WHEN SEARCH IS DONE. STORE HISTORY DATA IN LOCAL STORAGE FOR BUTTONS TO PULL DATA
+
   
+  
+//   var savedCities = JSON.parse(localStorage.getItem(value));
+
+//   $.each(savedCities, function(value){
+//    console.log(value.name);
+// });
+
   function addingButton(key, value) {
-    localStorage.setItem(key, input.val());
-    var item = localStorage.getItem(value);
+    searchedCities = [];
+    localStorage.setItem('cities', JSON.stringify(searchedCities));
+    // localStorage.setItem(key, JSON.stringify(input.val()));
+    var item = JSON.parse(localStorage.getItem(value));
+    searchedCities = item.split(',');
     input.innerHTML = item
     if(item != null) {
       var newBtn = $("<button>");
@@ -44,15 +59,20 @@ $(document).ready(function(){
     };
     newBtn.on("click", function() {
       localStorage.getItem(item);
+      citySearch(item);
       if(item) {
         item = input.innerHTML;
       }
     });
   }
 
-
   searchBtn.on("click", function() {
     value = $("#search").val().toLowerCase();
+    citySearch(value);
+    addingButton();
+  })
+
+    function citySearch(value) {
       $.ajax( {
         url: weatherURL, 
         method: "GET",
@@ -121,6 +141,7 @@ $(document).ready(function(){
           $("#uvText").text(resp[0].value);
         })
       });
-      addingButton();
-  })
+    }
+      
+  
 })
