@@ -6,8 +6,7 @@ $(document).ready(function(){
 
   var searchBtn = $("#searchBtn");
   var input = $("#search");
-  var value = input.val();
-  var newBtn = $("<button>");
+  var value;
 
   // Variables for today's weather
   var title = $("#cityTitle");
@@ -16,7 +15,7 @@ $(document).ready(function(){
   var wind = $("#wind");
   
 
-  var searchedCities;
+  
 
   // Variables for 5-Day forecast temperature and humidity
   var firstTemp = $("#1Temp");
@@ -35,41 +34,51 @@ $(document).ready(function(){
   var fourthDate = $("#4date");
   var fifthDate = $("#5date");
 
+  var searchedCities = [];
+
+  // saveData();
   // ADD FUNCTION FOR ADDING BUTTONS WHEN SEARCH IS DONE. STORE HISTORY DATA IN LOCAL STORAGE FOR BUTTONS TO PULL DATA
-
-  
-  
-//   var savedCities = JSON.parse(localStorage.getItem(value));
-
-//   $.each(savedCities, function(value){
-//    console.log(value.name);
-// });
-
-  function addingButton(key, value) {
-    searchedCities = [];
+  function saveData(data) {
+    // var searchedCities = [];
+    // console.log(input);
+    searchedCities.push(data);
     localStorage.setItem('cities', JSON.stringify(searchedCities));
-    // localStorage.setItem(key, JSON.stringify(input.val()));
-    var item = JSON.parse(localStorage.getItem(value));
-    searchedCities = item.split(',');
-    input.innerHTML = item
+    // var item = JSON.parse(localStorage.getItem(input.val()));
+    console.log(localStorage);
+    
+    addingButton();
+  }
+
+
+  function addingButton() {
+    // $('.list-group').empty();
+    // item is an array of values from the 'cities' KEY
+    var item = JSON.parse(localStorage.getItem('cities'));
+    for(let i = 0; i < searchedCities.length; i++) {
+      input.innerHTML = searchedCities[i];
+    }
     if(item != null) {
       var newBtn = $("<button>");
       newBtn.html(item);
       newBtn.appendTo(".list-group");
+      newBtn.on("click", function() {
+        localStorage.getItem(item);
+        citySearch(item);
+        if(item) {
+          item = input.innerHTML;
+        }
+      });
     };
-    newBtn.on("click", function() {
-      localStorage.getItem(item);
-      citySearch(item);
-      if(item) {
-        item = input.innerHTML;
-      }
-    });
   }
 
   searchBtn.on("click", function() {
+    // console.log("click");
+
     value = $("#search").val().toLowerCase();
+    console.log(`value is ${value}`);
+    saveData(value);
     citySearch(value);
-    addingButton();
+    // addingButton();
   })
 
     function citySearch(value) {
