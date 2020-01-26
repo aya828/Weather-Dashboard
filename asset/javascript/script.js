@@ -36,6 +36,19 @@ $(document).ready(function(){
 
   var searchedCities = [];
 
+  function init() {
+    // If there is nothing in local storage 
+    if(localStorage.length < 1) {
+      // setup an empty array
+      searchedCities = [];
+    } else {
+      // Otherwise pull that data out of localstorage
+      searchedCities = JSON.parse(localStorage.getItem('cities'));
+    }
+    console.log(`Cities: ${searchedCities}`);
+    // We have our data, Let's populate the buttons
+    addingButton();
+  }
   // saveData();
   // ADD FUNCTION FOR ADDING BUTTONS WHEN SEARCH IS DONE. STORE HISTORY DATA IN LOCAL STORAGE FOR BUTTONS TO PULL DATA
   function saveData(data) {
@@ -47,29 +60,24 @@ $(document).ready(function(){
     console.log(localStorage);
     
     addingButton();
+    init();
   }
-
 
   function addingButton() {
-    // $('.list-group').empty();
+    $('.list-group').empty();
     // item is an array of values from the 'cities' KEY
-    var item = JSON.parse(localStorage.getItem('cities'));
+    console.log(`Array is : ${searchedCities}`);
+    // var item = JSON.parse(localStorage.getItem('cities'));
     for(let i = 0; i < searchedCities.length; i++) {
-      input.innerHTML = searchedCities[i];
-    }
-    if(item != null) {
-      var newBtn = $("<button>");
-      newBtn.html(item);
-      newBtn.appendTo(".list-group");
+      var newBtn = $("<button>").text(searchedCities[i]).val(searchedCities[i]);
       newBtn.on("click", function() {
-        localStorage.getItem(item);
-        citySearch(item);
-        if(item) {
-          item = input.innerHTML;
-        }
+        console.log('Click');
+        let city = $(this).val();
+        console.log(city);
+        citySearch(city);
       });
-    };
-  }
+      newBtn.appendTo(".list-group");
+    }
 
   searchBtn.on("click", function() {
     // console.log("click");
@@ -78,7 +86,8 @@ $(document).ready(function(){
     console.log(`value is ${value}`);
     saveData(value);
     citySearch(value);
-    // addingButton();
+    $("#search").val("");
+    addingButton();
   })
 
     function citySearch(value) {
@@ -150,7 +159,6 @@ $(document).ready(function(){
           $("#uvText").text(resp[0].value);
         })
       });
-    }
-      
-  
+    };
+  }
 })
